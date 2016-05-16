@@ -4,7 +4,7 @@ from ScrolledText import *
 import tkFileDialog
 import tkMessageBox
  
-root = Tkinter.Tk(className=" Just another Text Editor")
+root = Tkinter.Tk(className=" Sample Text Editor")
 textPad = ScrolledText(root, width=100, height=80)
  
 # create a menu & define functions for each menu item
@@ -29,11 +29,11 @@ def exit_command():
         root.destroy()
  
 def about_command():
-    label = tkMessageBox.showinfo("About", "Just Another TextPad \n Copyright \n No rights left to reserve")
+    label = tkMessageBox.showinfo("About", "Sample TextPad \n Base for new project \n To be filled in later ")
          
  
 def dummy():
-    print "I am a Dummy Command, I will be removed in the next step"
+    print "I am a Dummy Command, I will be removed later"
 menu = Menu(root)
 root.config(menu=menu)
 filemenu = Menu(menu)
