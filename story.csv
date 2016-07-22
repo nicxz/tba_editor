@@ -1,7 +1,6 @@
 TITLE$Een Titel
-$var$string$sex$female
-$var$int$age$30
-$var$string$name$Some Name
-$story
+var$string$sex$female
+var$int$age$30
+var$string$name$Some Name
 00001$Once upon a time, in a galaxy far, far away....
 00002$There once was a man from Nantucket,

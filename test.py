@@ -1,5 +1,4 @@
 from tkinter import *
-from tkinter.scrolledtext import ScrolledText
 from tkinter.filedialog import asksaveasfilename
 from tkinter.filedialog import askopenfilename
 from tkinter.simpledialog import askstring
@@ -8,8 +7,8 @@ from tkinter.messagebox import showerror
 import csv
 from collections import defaultdict
 
+root = Tk()
 columns = defaultdict(list) # each value in each column is appended to a list
-
 
 
 class ScrolledText(Frame):
@@ -67,13 +66,18 @@ class SimpleEditor(ScrolledText):
         Button(frm, text='Cut',   command=self.onCut).pack(side=LEFT)
         Button(frm, text='Paste', command=self.onPaste).pack(side=LEFT)
         Button(frm, text='Find',  command=self.onFind).pack(side=LEFT)
-        Button(frm, text='NewVariable', command=self.onNewVariable).pack(side=RIGHT)
+
+        #Button(frm, text='NewVariable', command=self.onNewVariable).pack(side=RIGHT)
+
         Quitter(frm).pack(side=LEFT)
         super().__init__(parent, file=file)
 
         self.text['font'] = 'courier', 12, 'normal'
         self.text.tag_configure('red', foreground='red', relief='raised')
         self.target = ''
+
+        self.onVariable()
+
 
     def onNew(self):
         self.text.delete('1.0', END)
@@ -88,9 +92,9 @@ class SimpleEditor(ScrolledText):
                     for row in contents:
                         if row[0] == 'TITLE':
                             storyTitle = row[1]
-                            self.text.insert('1.0' , " Story title is: " + storyTitle + '\n\n')
-                            #elif columns[2] == 'var':
-
+                            self.text.insert('1.0' , "Story title is: " + storyTitle + '\n\n')
+                        elif row[0] == 'var':
+                            pass
                         else:
                             self.text.insert(END, "ID: " + row[0], "red")
                             self.text.insert(END, "   " + row[1])
@@ -137,7 +141,7 @@ class SimpleEditor(ScrolledText):
                 self.text.see(INSERT)
                 self.text.focus()
 
-    def onNewVariable(self):
+    def onVariable(self):
         NewVarWindow = Tk()
         Label(NewVarWindow, text="Variable name").grid(row=0)
         Label(NewVarWindow, text="Variable type").grid(row=1)
@@ -151,17 +155,20 @@ class SimpleEditor(ScrolledText):
         vartype.grid(row=1, column=1)
         vardefault.grid(row=2, column=1)
 
-        Button(NewVarWindow, text='Save', command=self.SaveNewVar).grid(row=4, column=0, sticky=W, pady=4)
+       #Button(NewVarWindow, text='Save', command=self.SaveNewVar).grid(row=4, column=0, sticky=W, pady=4)
 
     def SaveNewVar(self):
         randomvar = 1
         # placeholder
 
+
+################################################################################
+
+
+
 ################################################################################
 
 
-
-################################################################################
 
 if __name__ == '__main__':
     SimpleEditor(file=sys.argv[1] if len(sys.argv) > 1 else None).mainloop()
