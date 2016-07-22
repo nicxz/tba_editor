@@ -5,6 +5,10 @@ from tkinter.filedialog import askopenfilename
 from tkinter.simpledialog import askstring
 from tkinter.messagebox import askokcancel
 from tkinter.messagebox import showerror
+import csv
+from collections import defaultdict
+
+columns = defaultdict(list) # each value in each column is appended to a list
 
 
 class ScrolledText(Frame):
@@ -66,28 +70,40 @@ class SimpleEditor(ScrolledText):
         super().__init__(parent, file=file)
 
         self.text['font'] = 'courier', 12, 'normal'
+        self.text.tag_configure('red', foreground='red', relief='raised')
         self.target = ''
 
     def onNew(self):
         self.text.delete('1.0', END)
 
     def onOpen(self):
-        filename = askopenfilename(title='Open File', filetypes=[("Text files", "*.txt")])
+        filename = askopenfilename(title='Open File', filetypes=[("CSV files", "*.csv")])
         if filename:
             try:
-                f = open(filename)
-                contents = f.read()
-                self.text.delete('1.0', END)
-                self.text.insert('1.0', contents)
-                f.close()
+                with open(filename, newline='') as f:
+                    contents = csv.reader(f, delimiter='$', quotechar='|')
+                    self.text.delete('1.0', END)
+                    for row in contents:
+                        if row[0] == 'TITLE':
+                            storyTitle = row[1]
+                            self.text.insert('1.0' , " Story title is: " + storyTitle + '\n\n')
+                            #elif columns[2] == 'var':
+
+                        else:
+                            self.text.insert(END, "ID: " + row[0], "red")
+                            self.text.insert(END, "   " + row[1])
+                            self.text.insert(END, '\n')
+                    f.close()
             except:
                 showerror("Open File", "Failed to read file\n'%s'" % filename)
             return
+        else:
+            showerror("Open File", "Cant find file\n'%s'" % filename)
 
 
     def onSave(self):
-        filename = asksaveasfilename(defaultextension='.txt',
-                                     filetypes=(('Text files', '*.txt'),
+        filename = asksaveasfilename(defaultextension='.csv',
+                                     filetypes=(('CSV files', '*.csv'),
                                                 ('Python files', '*.py *.pyw'),
                                                 ('All files', '*.*')))
         if filename:
