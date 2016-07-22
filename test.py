@@ -1,6 +1,6 @@
 from tkinter import *
-#from tkinter.scrolledtext import ScrolledText
-from tkinter.filedialog   import asksaveasfilename
+from tkinter.scrolledtext import ScrolledText
+from tkinter.filedialog import asksaveasfilename
 from tkinter.filedialog import askopenfilename
 from tkinter.simpledialog import askstring
 from tkinter.messagebox import askokcancel
@@ -9,6 +9,7 @@ import csv
 from collections import defaultdict
 
 columns = defaultdict(list) # each value in each column is appended to a list
+
 
 
 class ScrolledText(Frame):
@@ -66,6 +67,7 @@ class SimpleEditor(ScrolledText):
         Button(frm, text='Cut',   command=self.onCut).pack(side=LEFT)
         Button(frm, text='Paste', command=self.onPaste).pack(side=LEFT)
         Button(frm, text='Find',  command=self.onFind).pack(side=LEFT)
+        Button(frm, text='NewVariable', command=self.onNewVariable).pack(side=RIGHT)
         Quitter(frm).pack(side=LEFT)
         super().__init__(parent, file=file)
 
@@ -134,6 +136,26 @@ class SimpleEditor(ScrolledText):
                 self.text.mark_set(INSERT, pastit)
                 self.text.see(INSERT)
                 self.text.focus()
+
+    def onNewVariable(self):
+        NewVarWindow = Tk()
+        Label(NewVarWindow, text="Variable name").grid(row=0)
+        Label(NewVarWindow, text="Variable type").grid(row=1)
+        Label(NewVarWindow, text="Default value").grid(row=2)
+
+        varname = Entry(NewVarWindow)
+        vartype = Entry(NewVarWindow)
+        vardefault = Entry(NewVarWindow)
+
+        varname.grid(row=0, column=1)
+        vartype.grid(row=1, column=1)
+        vardefault.grid(row=2, column=1)
+
+        Button(NewVarWindow, text='Save', command=self.SaveNewVar).grid(row=4, column=0, sticky=W, pady=4)
+
+    def SaveNewVar(self):
+        randomvar = 1
+        # placeholder
 
 ################################################################################
 
